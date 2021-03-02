@@ -1,3 +1,16 @@
+<?php
+use Illuminate\Support\Facades\Auth;
+
+$user = Auth::user();
+
+//TODO user roles redirect
+if($user->name == "student"){
+    return redirect()->to('/student/index')->send();
+}else{
+    return redirect()->to('/teacher/index')->send();
+}
+
+?>
 @extends('layouts.app')
 
 @section('content')
@@ -14,7 +27,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ __('You are logged in!') }} HOME
                 </div>
             </div>
         </div>

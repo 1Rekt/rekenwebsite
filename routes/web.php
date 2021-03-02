@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TeacherMessageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,4 +22,28 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::group([
+    'middleware' => 'auth',
+], function() {
+
+    Route::get('home', function () { return view('check'); });
+
+
+    Route::get('/student/index', function () { return view('student/index'); });
+
+
+
+
+
+
+
+
+
+
+
+    Route::get('/teacher/index', function () { return view('teacher/index'); })->name('teacher.index');
+    Route::post('/newmessage', [TeacherMessageController::class, 'store'])->name('teacher.message.create');
+
+});

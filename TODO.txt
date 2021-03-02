@@ -1,0 +1,14 @@
+docent leerling aanmaken
+
+Groep 4 sommen van 0 – 10
+Groep 5 sommen van 0 – 50
+Groep 6 sommen van 0 – 100
+Message of the day
+Inlog individuele student
+Scores worden per student bijgehouden (hoeveel goed/fout per onderdeel cq vraag)
+Toets per rekenonderdeel (+, -, /, *)
+
+Leerlingen moeten beloont worden als hun antwoorden goed zijn
+
+??????????????????
+message of the day per klas of over de hele school?
