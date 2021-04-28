@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Auth;
 
 $user = Auth::user();
-//test
+//test23231
 //TODO user roles redirect
 if($user->name == "student"){
     return redirect()->to('/student/index')->send();
