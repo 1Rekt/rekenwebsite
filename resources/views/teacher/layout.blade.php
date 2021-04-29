@@ -1,9 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Auth;
-//TODO Roles check layout
-if(Auth::user()->name !== "teacher"){
-    //echo "<h1>You cant view this page!</h1>";
-    //exit;
+if(Auth::user()->role !== "teacher"){
+    echo "<h1>You cant view this page!</h1>";
+    exit;
 }
 ?>
 

@@ -1,20 +1,55 @@
+
+<!-- 
+Group 4 = 0-10
+Group 5 = 0-50
+Group 6 = 0-100
+
+-->
 @extends('student.layout')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+    
+        <div class="col-md-6">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
+                <div class="card-header">Plus</div>
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="{{ route('student.assignment.index', ['plus', '10']) }}" class="btn btn-success">Plus 0-10</a>
                         </div>
-                    @endif
-
-                    {{ __('You are logged in!') }} as a student
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Minus</div>
+                <div class="card-body">
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row justify-content-center">
+    
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Times</div>
+                <div class="card-body">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Divided</div>
+                <div class="card-body">
                 </div>
             </div>
         </div>

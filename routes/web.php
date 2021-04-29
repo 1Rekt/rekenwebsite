@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TeacherMessageController;
+use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\UserController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +35,8 @@ Route::group([
     Route::get('home', function () { return view('check'); });
 
 
-    Route::get('/student/index', function () { return view('student/index'); });
+    Route::get('/student/index', function () { return view('student/index'); })->name('student.index');
+    Route::get('/student/assignment/{kind}/{max}', [AssignmentController::class, 'index'])->name('student.assignment.index');
 
 
 
@@ -45,5 +50,10 @@ Route::group([
 
     Route::get('/teacher/index', function () { return view('teacher/index'); })->name('teacher.index');
     Route::post('/newmessage', [TeacherMessageController::class, 'store'])->name('teacher.message.create');
+
+    Route::get('/teacher/user/create', [UserController::class, 'create'])->name('teacher.user.create');
+    Route::post('/teacher/user/create', [UserController::class, 'store'])->name('teacher.user.store');
+    Route::get('/teacher/user/edit/{id}', [UserController::class, 'edit'])->name('teacher.user.edit');
+    Route::post('/teacher/user/edit/{id}', [UserController::class, 'update'])->name('teacher.user.update');
 
 });
