@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TeacherMessageController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SomController;
 
 
 
@@ -36,7 +37,8 @@ Route::group([
 
 
     Route::get('/student/index', function () { return view('student/index'); })->name('student.index');
-    Route::get('/student/assignment/{kind}/{max}', [AssignmentController::class, 'index'])->name('student.assignment.index');
+    // Route::get('/student/assignment/{kind}/{max}', [AssignmentController::class, 'index'])->name('student.assignment.index');
+    Route::get('/student/assignment/{code}', [SomController::class, 'index'])->name('student.som.index');
 
 
 
@@ -56,4 +58,8 @@ Route::group([
     Route::get('/teacher/user/edit/{id}', [UserController::class, 'edit'])->name('teacher.user.edit');
     Route::post('/teacher/user/edit/{id}', [UserController::class, 'update'])->name('teacher.user.update');
 
+
+
+
+    
 });

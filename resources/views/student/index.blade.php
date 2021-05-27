@@ -17,7 +17,7 @@ Group 6 = 0-100
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{ route('student.assignment.index', ['plus', '10']) }}" class="btn btn-success">Plus 0-10</a>
+                            <a href="{{ route('student.som.index', ['+,010']) }}" class="btn btn-success">Plus 0-10</a>
                         </div>
                     </div>
                     <div class="row">
