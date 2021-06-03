@@ -22,7 +22,7 @@ use App\Http\Controllers\SomController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('student.index');
 });
 
 Auth::routes();

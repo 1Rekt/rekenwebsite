@@ -58,16 +58,32 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-8 mx-auto">
-                        <div id="smallDiv">1</div>
-                        <div id="smallDiv">2</div>
-                        <div id="smallDiv">3</div>
-                        <div id="smallDiv">4</div>
-                        <div id="smallDiv">5</div>
-                        <div id="smallDiv">6</div>
-                        <div id="smallDiv">7</div>
-                        <div id="smallDiv">8</div>
-                        <div id="smallDiv">9</div>
-                        <div id="smallDiv">10</div>
+                    @php $i = 1; @endphp
+                        @foreach ($alleSommen as $key => $som)
+                            @if($som->answerresult == 1)
+                                <div id="smallDiv" class="groen">{{$i}}</div>
+                            @elseif($som->answer !== NULL && $som->answerresult == 0)
+                                <div id="smallDiv" class="rood">{{$i}}</div>
+                            @else
+                                <div id="smallDiv" class="blauw">{{$i}}</div>
+                            @endif
+                            @php $i++; @endphp
+                        @endforeach
+                    </div>
+                </div>
+                <br /><br /><br /><br /><br />
+                <div class="row">
+                    <div class="col-sm-8 mx-auto">
+                        <h1>Wat is {{$currentSom->somstring}}?</h1><br />
+
+                        <form method="POST">
+                        {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="answer">Antwoord</label>
+                                <input type="number" class="form-control" id="answer" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>

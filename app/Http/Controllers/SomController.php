@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Assignment;
 
 class SomController extends Controller
 {
@@ -13,29 +15,8 @@ class SomController extends Controller
      */
     public function index(Request $request, $code)
     {
-        $splittedCode = explode(",",$code);
-        $kind = $splittedCode[0];
-        $somCode = $splittedCode[1];
-        //URL CHECK
-        switch ($somCode) {
-            case "010":
-                $min = 0;
-                $max = 10;
-                break;
-            case "050":
-                $min = 0;
-                $max = 50;
-                break;
-            case "0100":
-                $min = 0;
-                $max = 100;
-                break;
-            default:
-                echo "Er is iets mis gegaan";
-                exit;
-        }
-
-        function makeSom($operator, $min, $max){
+        $user = Auth::user();
+        function makeSom($operator, $batch, $min, $max){
             switch ($operator) {
                 case "+":
                     $random1 = rand($min, $max);
@@ -43,6 +24,8 @@ class SomController extends Controller
 
                     $somString = $random1.' + '.$random2;
                     $result = $random1 + $random2;
+
+                    
                     break;
                 case "-":
                     $random1 = rand($min, $max);
@@ -73,17 +56,49 @@ class SomController extends Controller
                     echo "Er is iets mis gegaan";
                     exit;
             }
+            $assignment = new Assignment(['user_id' => Auth::user()->id,'batch' => $batch, 'somkind' => $operator,'somstring' => $somString,'result' => $result]);
+            $assignment->save();
         }
-        //CHECK IF SOMMEN EXIST
-        //JA
-            //PAK ALLE SOMMEN 
-        //NEE
-            for($i=1; $i<11; $i++){
-                makeSom($kind, $min, $max);
+
+        if($user->group == 4){
+            $min = 0;
+            $max = 10;
+        }elseif($user->group == 5){
+            $min = 0;
+            $max = 50;
+        }elseif($user->group == 6){
+            $min = 0;
+            $max = 100;
+        }
+        $kind = $code;
+
+        $currentBatch = Assignment::where('user_id', $user->id)->where('somkind', $kind)->where('answerresult', NULL)->first();
+        if($currentBatch == NULL){
+            //Als er geen openstaande vragen meer zijn
+            $lastBatch = Assignment::where('user_id', $user->id)->where('somkind', $kind)->where('user_id', $user->id)->first();
+            if($lastBatch == NULL){
+                //als er nog nooit vragen gemaakt zijn
+                $batch = 1;
+            }else{
+                //als er wel al ooit vragen waren gemaakt
+                $lastBatch = $lastBatch->batch;
+                $batch = $lastBatch + 1;
             }
-            //PAK ALLE SOMMEN
-        //RETURN ALLE SOMMEN
-        return view('som');
+            for($i=1; $i<11; $i++){
+                makeSom($kind,$batch, $min, $max);
+            }
+
+        }else{
+            //Als er nog openstaande vragen zijn
+            $batch = $currentBatch->batch;
+
+        }
+        $alleSommen = Assignment::where('somkind', $kind)->where('user_id', $user->id)->where('batch', $batch)->get();
+        $currentSom = Assignment::where('somkind', $kind)->where('user_id', $user->id)->where('batch', $batch)->where('answer', NULL)->first();
+        return view('som',[
+            'alleSommen' => $alleSommen,
+            'currentSom' => $currentSom,
+        ]);
 
     }
 
