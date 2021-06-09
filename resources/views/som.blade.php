@@ -1,3 +1,10 @@
+<?php
+if(isset($_POST['answer'])){
+    echo "test";
+    exit;
+}
+?>
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -60,12 +67,12 @@
                     <div class="col-sm-8 mx-auto">
                     @php $i = 1; @endphp
                         @foreach ($alleSommen as $key => $som)
-                            @if($som->answerresult == 1)
-                                <div id="smallDiv" class="groen">{{$i}}</div>
-                            @elseif($som->answer !== NULL && $som->answerresult == 0)
-                                <div id="smallDiv" class="rood">{{$i}}</div>
+                            @if($som->answer == $som->result)
+                                <div id="smallDiv" style="background-color: green;">{{$i}}</div>
+                            @elseif($som->answer !== NULL && $som->result !== $som->answer)
+                                <div id="smallDiv"  style="background-color: red;">{{$i}}</div>
                             @else
-                                <div id="smallDiv" class="blauw">{{$i}}</div>
+                                <div id="smallDiv">{{$i}}</div>
                             @endif
                             @php $i++; @endphp
                         @endforeach
@@ -76,11 +83,11 @@
                     <div class="col-sm-8 mx-auto">
                         <h1>Wat is {{$currentSom->somstring}}?</h1><br />
 
-                        <form method="POST">
+                        <form method="POST" action="{{route('student.som.store',[$code,$currentSom])}}">
                         {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="answer">Antwoord</label>
-                                <input type="number" class="form-control" id="answer" placeholder="Password">
+                                <input type="number" class="form-control" id="answer" name="answer">
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>

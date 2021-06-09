@@ -39,7 +39,7 @@ Route::group([
     Route::get('/student/index', function () { return view('student/index'); })->name('student.index');
     // Route::get('/student/assignment/{kind}/{max}', [AssignmentController::class, 'index'])->name('student.assignment.index');
     Route::get('/student/assignment/{code}', [SomController::class, 'index'])->name('student.som.index');
-
+    Route::post('/student/assignment/{code}/{som}', [SomController::class, 'store'])->name('student.som.store');
 
 
 

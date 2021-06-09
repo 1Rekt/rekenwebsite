@@ -17,6 +17,15 @@ $students = User::where("group", Auth::user()->group)->where('role', 'student')-
 
 @section('content')
 <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @if(session()->has('success'))
+                <div class="alert alert-success">
+                    {{ session()->get('success') }}
+                </div>
+            @endif
+        </div>
+    </div>
     <div class="row justify-content-center">
     
         <div class="col-md-6">

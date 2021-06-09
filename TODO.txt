@@ -10,5 +10,6 @@ Toets per rekenonderdeel (+, -, :, *)
 
 Leerlingen moeten beloont worden als hun antwoorden goed zijn
 
+Answer in database decimal ?
 ??????????????????
 message of the day per klas of over de hele school?

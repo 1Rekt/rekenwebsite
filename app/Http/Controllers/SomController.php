@@ -16,6 +16,7 @@ class SomController extends Controller
     public function index(Request $request, $code)
     {
         $user = Auth::user();
+        $loopMax = 11;
         function makeSom($operator, $batch, $min, $max){
             switch ($operator) {
                 case "+":
@@ -56,8 +57,12 @@ class SomController extends Controller
                     echo "Er is iets mis gegaan";
                     exit;
             }
-            $assignment = new Assignment(['user_id' => Auth::user()->id,'batch' => $batch, 'somkind' => $operator,'somstring' => $somString,'result' => $result]);
-            $assignment->save();
+            if($result == 0){
+                return "test";
+            }else{
+                $assignment = new Assignment(['user_id' => Auth::user()->id,'batch' => $batch, 'somkind' => $operator,'somstring' => $somString,'result' => $result]);
+                $assignment->save();
+            }
         }
 
         if($user->group == 4){
@@ -71,7 +76,6 @@ class SomController extends Controller
             $max = 100;
         }
         $kind = $code;
-
         $currentBatch = Assignment::where('user_id', $user->id)->where('somkind', $kind)->where('answerresult', NULL)->first();
         if($currentBatch == NULL){
             //Als er geen openstaande vragen meer zijn
@@ -84,8 +88,12 @@ class SomController extends Controller
                 $lastBatch = $lastBatch->batch;
                 $batch = $lastBatch + 1;
             }
-            for($i=1; $i<11; $i++){
-                makeSom($kind,$batch, $min, $max);
+            for($i=1; $i<$loopMax; $i++){
+                $b = makeSom($kind,$batch, $min, $max);
+                if($b == "test"){
+                    $loopMax++;
+                    dump("result was 0", $i);
+                }
             }
 
         }else{
@@ -98,6 +106,7 @@ class SomController extends Controller
         return view('som',[
             'alleSommen' => $alleSommen,
             'currentSom' => $currentSom,
+            'code' => $code,
         ]);
 
     }
@@ -118,9 +127,25 @@ class SomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $code, Assignment $som)
     {
-        //
+        $answer = $request->answer;
+        $som->answer = (int)$answer;
+        if($som->answer == $som->result){
+            $som->answerresult = 1;
+        }else{
+            $som->answerresult = 0;
+        }
+        $som->save();
+
+        $lastSom = Assignment::where('batch', $som->batch)->orderBy('id', 'desc')->first();
+        if($lastSom->id == $som->id){
+            return redirect(route('student.index'))->with('success', 'Sommen afgerond');
+        }else{
+            return redirect(route('student.som.index',[
+                $code,
+            ]));
+        }
     }
 
     /**
